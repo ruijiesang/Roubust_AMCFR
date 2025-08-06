@@ -1,5 +1,28 @@
-# README
-This is the PyTorch implementation of paper “[Convolutional Neural Network Assisted Transformer for Automatic Modulation Recognition under Large CFOs and SROs](https://ieeexplore.ieee.org/document/10458301)”.
+<h1 style="text-align:center;">
+  <a href="https://openreview.net/pdf?id=DDIGCk25BO" target="_blank" style="text-decoration:none; color: inherit;">
+    VistaDPO: Video Hierarchical Spatial-Temporal Direct Preference Optimization for Large Video Models
+  </a>
+</h1>
+
+<p style="text-align:center;">
+  <a href="https://xinyanliang.github.io/"><u>Xinyan Liang</u></a><sup>1</sup>, 
+  <u>Ruijie Sang</u><sup>1</sup>, 
+  <a href="https://dig.sxu.edu.cn/qyh/"><u>Yuhua Qian</u></a><sup>1</sup>, 
+  <u>Qian Guo</u><sup>2</sup>, 
+  <u>Feijiang Li</u><sup>1</sup>,
+  <u>Liang Du</u><sup>1</sup>
+</p>
+
+<p style="text-align:center;">
+  <sup>1</sup>Shanxi University, <sup>2</sup>Taiyuan University of Science and Technology
+</p>
+
+<p style="text-align:center;">
+  <a href="https://openreview.net/pdf?id=DDIGCk25BO">
+    <img src="https://img.shields.io/badge/OpenReview-gray?style=flat&logo=OpenReview">
+  </a>
+</p>
+
 
 # Citation
 ```
