@@ -1,0 +1,44 @@
+method: 'ThreeStream'
+train: True
+dataset: '2016a_noisydatatrain'
+#mod_type: ["BPSK", "QPSK", "8PSK", "PAM4", "QAM16", "QAM32", "QAM64", "QAM128", "QAM256", "GFSK", "WBFM", "AM-DSB", "AM-SSB", "OOK", "4ASK", "8ASK", "16PSK", "32PSK","8APSK","GMSK", "DQPSK","16APSK","32APSK","64APSK","128APSK"]
+mod_type: ['8PSK', 'AM-DSB', 'AM-SSB', 'BPSK', 'CPFSK', 'GFSK', 'PAM4', 'QAM16','QAM64', 'QPSK', 'WBFM']
+snr_type: [0,2,4,6,8,10,12,14,16,18]
+workers: 8
+seed: 1
+gpu: 4
+cpu: False
+params:
+    "network": "ThreeStream"
+    "loss": "loss_FG_test"
+    "loss_c": 2
+    "loss_t": 2
+    "loss_alp": 0.01
+    "batch_size": 256
+    "epochs": 200
+    "lr": 1e-4
+    "lr_decay": 0.
+    "weight_decay": 0.
+    "early_stop": False
+    "Xmode": [{"type":"APF","options":{"IQ_norm":False, "zero_mask":False}}]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

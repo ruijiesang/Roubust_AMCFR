@@ -1,0 +1,46 @@
+method: 'DAELSTM'
+train: True
+dataset: '2016a_noisydatatest_2'
+#mod_type: ['OOK', '4ASK', '8ASK', 'BPSK', 'QPSK', '8PSK', '16PSK', '32PSK', '16APSK', '32APSK', '64APSK', '128APSK', '16QAM', '32QAM', '64QAM', '128QAM', '256QAM', 'AM-SSB-WC', 'AM-SSB-SC', 'AM-DSB-WC', 'AM-DSB-SC','FM', 'GMSK', 'OQPSK']
+mod_type: ['8PSK', 'AM-DSB', 'AM-SSB', 'BPSK', 'CPFSK', 'GFSK', 'PAM4', 'QAM16','QAM64', 'QPSK', 'WBFM']
+#mod_type: ['8PSK', 'AM-DSB', 'BPSK', 'CPFSK', 'GFSK', 'PAM4', 'QAM16', 'QAM64', 'QPSK', 'WBFM']
+#mod_type: ['AM-DSB', 'AM-SC', 'AM-USB', 'AM-LSB', 'FM', 'PM', '2FSK', '4FSK', '8FSK', '16FSK',' 4PAM', '8PAM', '16PAM', 'BPSK','QPSK', '8PSK', '16PSK','32PSK', '64PSK', '4QAM', '8QAM', '16QAM', '32QAM', '64QAM', '128QAM', '256QAM']
+snr_type: [0,2,4,6,8,10,12,14,16,18]
+workers: 8
+seed: 1
+gpu: 7
+cpu: False
+params:
+    "network": "DAELSTM"
+    "loss": "loss_LS"
+    "loss_c": 2
+    "loss_t": 2
+    "loss_alp": 0.01
+    "batch_size": 128
+    "epochs": 200
+    "lr": 5e-3
+    "lr_decay": 0.
+    "weight_decay": 0.
+    "early_stop": False
+    "Xmode": [{"type":"AP","options":{"IQ_norm":False, "zero_mask":True}}]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
