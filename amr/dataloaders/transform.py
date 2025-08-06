@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 import random
-__all__ = ['normalize_IQ', 'get_amp_phase', 'get_apf1', 'get_apf2', 'zero_mask', 'get_iq_framed','get_apf3']
+__all__ = ['normalize_IQ', 'get_amp_phase', 'get_apf1', 'zero_mask', 'get_iq_framed']
 
 
 def normalize_IQ(t):  # 2*1024

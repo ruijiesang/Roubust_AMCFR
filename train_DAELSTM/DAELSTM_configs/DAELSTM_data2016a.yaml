@@ -1,6 +1,6 @@
 method: 'DAELSTM'
 train: True
-dataset: '2016a_noisydatatest_2'
+dataset: '2016a'
 #mod_type: ['OOK', '4ASK', '8ASK', 'BPSK', 'QPSK', '8PSK', '16PSK', '32PSK', '16APSK', '32APSK', '64APSK', '128APSK', '16QAM', '32QAM', '64QAM', '128QAM', '256QAM', 'AM-SSB-WC', 'AM-SSB-SC', 'AM-DSB-WC', 'AM-DSB-SC','FM', 'GMSK', 'OQPSK']
 mod_type: ['8PSK', 'AM-DSB', 'AM-SSB', 'BPSK', 'CPFSK', 'GFSK', 'PAM4', 'QAM16','QAM64', 'QPSK', 'WBFM']
 #mod_type: ['8PSK', 'AM-DSB', 'BPSK', 'CPFSK', 'GFSK', 'PAM4', 'QAM16', 'QAM64', 'QPSK', 'WBFM']
@@ -12,7 +12,7 @@ gpu: 7
 cpu: False
 params:
     "network": "DAELSTM"
-    "loss": "loss_LS"
+    "loss": "loss_FG"
     "loss_c": 2
     "loss_t": 2
     "loss_alp": 0.01

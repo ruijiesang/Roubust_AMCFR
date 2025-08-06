@@ -78,7 +78,7 @@ class DAELSTM(nn.Module):
         w = x2[:, 0].reshape(x.shape[0], -1)
         phi = x2[:, 1].reshape(x.shape[0], -1)
 
-        n = torch.arange(0, 1024).reshape(1, -1).to(x.device).float()
+        n = torch.arange(0, 128).reshape(1, -1).to(x.device).float()
         A = x[:, 0]
         P = x[:, 1]
 

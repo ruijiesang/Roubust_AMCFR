@@ -21,7 +21,7 @@ class SignalDataLoader(object):
         for idx in data_keys:                               #重新梳理数据结构
             if idx[0] in mod_type and idx[1] in snr_type:
                 X.extend(data[idx])                         #数据样本[?,2,128]
-                Y.extend([mods.index(idx[0])]*data[idx].shape[0])       #样本标签[?,1]，单一数字表示的类别
+                Y.extend([mod_type.index(idx[0])]*data[idx].shape[0])       #样本标签[?,1]，单一数字表示的类别
                 Z.extend([idx[1]]*data[idx].shape[0])                   #样本信噪比[?,1]，数字表示的信噪比
 
         #变成numpy

@@ -1,11 +1,8 @@
-import sys
-sys.path.append('/home/sangruijie_qyh/Code/TransGroupNet-master/TransGroupNet-master')
-
 import torch
 import torch.nn as nn
 from amr.dataloaders.dataloader import *
 from amr.utils import *
-from amr.utils.solver1 import *
+from amr.utils.solver import *
 from DAELSTM_config import *
 
 

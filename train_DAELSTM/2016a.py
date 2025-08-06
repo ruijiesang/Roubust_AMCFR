@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from amr.dataloaders.dataloader import *
 from amr.utils import *
-from amr.utils.solver1 import *
+from amr.utils.solver import *
 from DAELSTM_config import *
 import os
 from amr.utils.log_train_info import train_info

@@ -10,7 +10,7 @@ class loss_LS(nn.Module):
         self.c = c
         self.t = t
         self.alpha=alpha
-        self.eps = 0.1  # 标签平滑系数
+        self.eps = 0.01  # 标签平滑系数
 
     def forward(self, pred,label,ori):
         predictions = F.softmax(pred, dim=1)
