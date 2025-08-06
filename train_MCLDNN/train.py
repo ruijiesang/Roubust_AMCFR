@@ -1,11 +1,8 @@
-import sys
-sys.path.append('/home/sangruijie_qyh/Code/TransGroupNet-master/TransGroupNet-master')
-
 import torch
 import torch.nn as nn
 from amr.dataloaders.dataloader import *
 from amr.utils import *
-from ThreeStream_config import *
+from MCLDNN_config import *
 
 from amr.utils.log_train_info import train_info
 
@@ -33,9 +30,6 @@ def main(cfgs,c,t):
     # 单个模型损失函数
 
     criterion = init_loss_FG(cfgs.params["loss"],len(cfgs.mod_type),int(c),float(t))
-
-
-
 
 
     # 单个模型训练
@@ -99,8 +93,10 @@ def main(cfgs,c,t):
 
 
 if __name__ == '__main__':
-    c = [2, 3, 5, 8, 10]
-    t = [0.0000001, 0.00000001, 0.0000005, 0.00001, 0.0001]
+    #c = [2, 3, 5, 8, 11,15,18,22,25]
+    #t = [0.00001, 0.000001, 0.0000001, 0.00000001]
+    c = [10]
+    t = [0.0000001]
     best_acc=0
     for c1 in c:
         for t1 in t:

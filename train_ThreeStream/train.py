@@ -1,22 +1,20 @@
-import sys
-sys.path.append('/home/sangruijie_qyh/Code/TransGroupNet-master/TransGroupNet-master')
 import torch
 import torch.nn as nn
 from amr.dataloaders.dataloader import *
 from amr.utils import *
-from FEAT_config import *
+from ThreeStream_config import *
+
 from amr.utils.log_train_info import train_info
 
-#将test_loader changse train_loasder
-def main(cfgs,t):
+
+def main(cfgs,c,t):
     logger.info('=> PyTorch Version: {}'.format(torch.__version__))
 
     # Environment initialization
     device, pin_memory = init_device(cfgs.seed, cfgs.cpu, cfgs.gpu)
     print(device, pin_memory)
 
-    path = './results/' + cfgs.method + '/' + cfgs.dataset + '/'  + cfgs.params["loss"]+'/' + str(t)+'t'
-
+    path = './results/' + cfgs.method + '/' + cfgs.dataset + '/'  + cfgs.params["loss"]+'/' + str(c) +'c'+'_'+str(t)+'t'
     train_loader, valid_loader, test_loader, snrs, mods = AMRDataLoader(dataset=cfgs.dataset,
                                                                         Xmode=cfgs.params["Xmode"][0],
                                                                         batch_size=cfgs.params["batch_size"],
@@ -30,10 +28,9 @@ def main(cfgs,t):
     model.to(device)
 
     # 单个模型损失函数
-    if cfgs.params["loss"]=="loss_FG_test2":
-        criterion = init_loss_FG(cfgs.params["loss"],len(cfgs.mod_type),float(t))
-    else:
-        criterion = init_loss(cfgs.params["loss"])
+
+    criterion = init_loss_FG(cfgs.params["loss"],len(cfgs.mod_type),int(c),float(t))
+
 
 
 
@@ -42,7 +39,7 @@ def main(cfgs,t):
     if cfgs.train:
         optimizer = torch.optim.AdamW(model.parameters(), lr=float(cfgs.params["lr"]), weight_decay=cfgs.params["weight_decay"])
         trainer = Trainer(model=model, device=device, optimizer=optimizer, lr_decay=cfgs.params["lr_decay"], criterion=criterion,
-                          save_path=path,
+                          save_path=path ,
                           early_stop=cfgs.params["early_stop"])
         train_loss, train_acc, valid_loss, valid_acc = trainer.loop(cfgs.params["epochs"], train_loader, valid_loader)
 
@@ -77,29 +74,32 @@ def main(cfgs,t):
     draw_acc(snrs, test_acc_snr,
              save_path=path + '/draws')
 
-    train_info(train_loss, train_acc, valid_loss, valid_acc, path)
+    train_info(train_loss,train_acc,valid_loss,valid_acc,path)
 
     highest_acc_snr = test_acc_snr.max().item()  # 获取单个 SNR 下的最高精度
     highest_acc_snr_idx = test_acc_snr.argmax().item()  # 获取对应的 SNR 索引
 
     global best_acc
-    if test_acc > best_acc:
-        best_acc = test_acc
+    if test_acc>best_acc:
+        best_acc=test_acc
 
-    path_test = './results/' + cfgs.method + '/' + cfgs.dataset + '/' + cfgs.params["loss"] + '/' + str(t) + 't'
+    path_test = './results/' + cfgs.method + '/' + cfgs.dataset + '/' + cfgs.params["loss"]
     logger.info(f'test_loss : {test_loss:.4e} | '
                 f'test_acc : {test_acc:.4f} |'
                 f'best_f1 :{f1:.4f}'
                 f'Highest Acc SNR: {highest_acc_snr_idx} | '
                 f'Acc: {highest_acc_snr:.4f}'
                 f'best_acc :{best_acc:.4f}'
-                f'args_t :{t}', file=path_test)
+                f'args_c :{c}'
+                f'args_t :{t}',file=path_test)
+
+
 
 if __name__ == '__main__':
-
-    t=[7]
+    c = [2, 3, 5, 8, 10]
+    t = [0.0000001, 0.00000001, 0.0000005, 0.00001, 0.0001]
     best_acc=0
-    for t1 in t:
-        cfgs = get_cfgs_2016aCen()
-        cfgs.seed=t1+cfgs.seed
-        main(cfgs,t1)
+    for c1 in c:
+        for t1 in t:
+            cfgs = get_cfgs()
+            main(cfgs,c1,t1)

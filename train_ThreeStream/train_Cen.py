@@ -1,6 +1,3 @@
-import sys
-sys.path.append('/home/sangruijie_qyh/Code/TransGroupNet-FR/TransGroupNet-master')
-
 import torch
 import torch.nn as nn
 from amr.dataloaders.dataloader import *

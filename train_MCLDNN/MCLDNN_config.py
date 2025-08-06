@@ -2,11 +2,7 @@ from yacs.config import CfgNode as CN
 import argparse
 import importlib
 
-__all__ = ['get_cfgs','get_cfgs_2016atest','get_cfgs_2016aCen',
-           'get_cfgs_noisydatatest_2','get_cfgs_2016atest_noisydatatest_2','get_cfgs_2016aCen_noisydatatest_2',
-           'get_cfgs_noisydatatest_4','get_cfgs_2016atest_noisydatatest_4','get_cfgs_2016aCen_noisydatatest_4',
-           'get_cfgs_noisydatatest_6','get_cfgs_2016atest_noisydatatest_6','get_cfgs_2016aCen_noisydatatest_6',
-           'get_cfgs_2016a_Notrain','get_cfgs_origin']#用于被别的代码调用
+__all__ = ['get_cfgs']#用于被别的代码调用
 
 _C = CN()
 
@@ -45,123 +41,6 @@ def get_cfgs():
     cfgs = get_cfg_defaults()
     parser = argparse.ArgumentParser(description='AMR HyperParameters')
     parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-master/TransGroupNet-master/train_MCLDNN/MCLDNN_configs/MCLDNN_data2016a.yaml',
-                        help='type of config file. e.g. resnet_cfo (Resnet_configs/resnet_cfo.yaml)')
-    args = parser.parse_args()
-    cfgs.merge_from_file(args.config)
-    return cfgs
-
-def get_cfgs_origin():
-    cfgs = get_cfg_defaults()
-    parser = argparse.ArgumentParser(description='AMR HyperParameters')
-    parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-master/TransGroupNet-master/train_MCLDNN/MCLDNN_configs/MCLDNN_data2016a_origin.yaml',
-                        help='type of config file. e.g. resnet_cfo (Resnet_configs/resnet_cfo.yaml)')
-    args = parser.parse_args()
-    cfgs.merge_from_file(args.config)
-    return cfgs
-
-def get_cfgs_2016atest():
-    cfgs = get_cfg_defaults()
-    parser = argparse.ArgumentParser(description='AMR HyperParameters')
-    parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-master/TransGroupNet-master/train_MCLDNN/MCLDNN_configs/MCLDNN_data2016a_test.yaml',
-                        help='type of config file. e.g. resnet_cfo (Resnet_configs/resnet_cfo.yaml)')
-    args = parser.parse_args()
-    cfgs.merge_from_file(args.config)
-    return cfgs
-
-def get_cfgs_2016aCen():
-    cfgs = get_cfg_defaults()
-    parser = argparse.ArgumentParser(description='AMR HyperParameters')
-    parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-master/TransGroupNet-master/train_MCLDNN/MCLDNN_configs/MCLDNN_data2016aCen.yaml',
-                        help='type of config file. e.g. resnet_cfo (Resnet_configs/resnet_cfo.yaml)')
-    args = parser.parse_args()
-    cfgs.merge_from_file(args.config)
-    return cfgs
-
-def get_cfgs_noisydatatest_4():
-    cfgs = get_cfg_defaults()
-    parser = argparse.ArgumentParser(description='AMR HyperParameters')
-    parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-master/TransGroupNet-master/train_MCLDNN/MCLDNN_configs/MCLDNN_data2016a_noisydatatest_4.yaml',
-                        help='type of config file. e.g. resnet_cfo (Resnet_configs/resnet_cfo.yaml)')
-    args = parser.parse_args()
-    cfgs.merge_from_file(args.config)
-    return cfgs
-
-def get_cfgs_2016atest_noisydatatest_4():
-    cfgs = get_cfg_defaults()
-    parser = argparse.ArgumentParser(description='AMR HyperParameters')
-    parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-master/TransGroupNet-master/train_MCLDNN/MCLDNN_configs/MCLDNN_data2016a_test_noisydatatest_4.yaml',
-                        help='type of config file. e.g. resnet_cfo (Resnet_configs/resnet_cfo.yaml)')
-    args = parser.parse_args()
-    cfgs.merge_from_file(args.config)
-    return cfgs
-
-def get_cfgs_2016aCen_noisydatatest_4():
-    cfgs = get_cfg_defaults()
-    parser = argparse.ArgumentParser(description='AMR HyperParameters')
-    parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-master/TransGroupNet-master/train_MCLDNN/MCLDNN_configs/MCLDNN_data2016aCen_noisydatatest_4.yaml',
-                        help='type of config file. e.g. resnet_cfo (Resnet_configs/resnet_cfo.yaml)')
-    args = parser.parse_args()
-    cfgs.merge_from_file(args.config)
-    return cfgs
-
-def get_cfgs_noisydatatest_2():
-    cfgs = get_cfg_defaults()
-    parser = argparse.ArgumentParser(description='AMR HyperParameters')
-    parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-master/TransGroupNet-master/train_MCLDNN/MCLDNN_configs/MCLDNN_data2016a_noisydatatest_2.yaml',
-                        help='type of config file. e.g. resnet_cfo (Resnet_configs/resnet_cfo.yaml)')
-    args = parser.parse_args()
-    cfgs.merge_from_file(args.config)
-    return cfgs
-
-def get_cfgs_2016atest_noisydatatest_2():
-    cfgs = get_cfg_defaults()
-    parser = argparse.ArgumentParser(description='AMR HyperParameters')
-    parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-master/TransGroupNet-master/train_MCLDNN/MCLDNN_configs/MCLDNN_data2016a_test_noisydatatest_2.yaml',
-                        help='type of config file. e.g. resnet_cfo (Resnet_configs/resnet_cfo.yaml)')
-    args = parser.parse_args()
-    cfgs.merge_from_file(args.config)
-    return cfgs
-
-def get_cfgs_2016aCen_noisydatatest_2():
-    cfgs = get_cfg_defaults()
-    parser = argparse.ArgumentParser(description='AMR HyperParameters')
-    parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-master/TransGroupNet-master/train_MCLDNN/MCLDNN_configs/MCLDNN_data2016aCen_noisydatatest_2.yaml',
-                        help='type of config file. e.g. resnet_cfo (Resnet_configs/resnet_cfo.yaml)')
-    args = parser.parse_args()
-    cfgs.merge_from_file(args.config)
-    return cfgs
-
-def get_cfgs_noisydatatest_6():
-    cfgs = get_cfg_defaults()
-    parser = argparse.ArgumentParser(description='AMR HyperParameters')
-    parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-master/TransGroupNet-master/train_MCLDNN/MCLDNN_configs/MCLDNN_data2016a_noisydatatest_6.yaml',
-                        help='type of config file. e.g. resnet_cfo (Resnet_configs/resnet_cfo.yaml)')
-    args = parser.parse_args()
-    cfgs.merge_from_file(args.config)
-    return cfgs
-
-def get_cfgs_2016atest_noisydatatest_6():
-    cfgs = get_cfg_defaults()
-    parser = argparse.ArgumentParser(description='AMR HyperParameters')
-    parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-master/TransGroupNet-master/train_MCLDNN/MCLDNN_configs/MCLDNN_data2016a_test_noisydatatest_6.yaml',
-                        help='type of config file. e.g. resnet_cfo (Resnet_configs/resnet_cfo.yaml)')
-    args = parser.parse_args()
-    cfgs.merge_from_file(args.config)
-    return cfgs
-
-def get_cfgs_2016aCen_noisydatatest_6():
-    cfgs = get_cfg_defaults()
-    parser = argparse.ArgumentParser(description='AMR HyperParameters')
-    parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-master/TransGroupNet-master/train_MCLDNN/MCLDNN_configs/MCLDNN_data2016aCen_noisydatatest_6.yaml',
-                        help='type of config file. e.g. resnet_cfo (Resnet_configs/resnet_cfo.yaml)')
-    args = parser.parse_args()
-    cfgs.merge_from_file(args.config)
-    return cfgs
-
-def get_cfgs_2016a_Notrain():
-    cfgs = get_cfg_defaults()
-    parser = argparse.ArgumentParser(description='AMR HyperParameters')
-    parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-master/TransGroupNet-master/train_MCLDNN/MCLDNN_configs/MCLDNN_data2016a_Notrain.yaml',
                         help='type of config file. e.g. resnet_cfo (Resnet_configs/resnet_cfo.yaml)')
     args = parser.parse_args()
     cfgs.merge_from_file(args.config)
