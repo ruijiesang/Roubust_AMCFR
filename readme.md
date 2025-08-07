@@ -39,9 +39,7 @@ on benchmark datasets demonstrate that the FR
 achieves superior classification accuracy and robustness compared to compared methods, making
 it a promising solution for real-world spectrum
 management and communication applications.
-
-![Model Architecture](assert/image.png)
-
+<img src="assert/image.png" alt="Demo Image" width="400"/>
 # 🧱 Architecture
 ``` 
 home
