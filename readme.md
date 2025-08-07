@@ -40,7 +40,7 @@ achieves superior classification accuracy and robustness compared to compared me
 it a promising solution for real-world spectrum
 management and communication applications.
 
-![Demo Image](assert/image.pdf)
+![Model Architecture](Roubust_AMCFR/assets/image.png)
 
 # 🧱 Architecture
 ``` 
