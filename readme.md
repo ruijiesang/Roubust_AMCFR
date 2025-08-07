@@ -21,6 +21,7 @@
   <a href="https://openreview.net/pdf?id=DDIGCk25BO">
     <img src="https://img.shields.io/badge/OpenReview-paper-b31b1b.svg" alt="Paper">
   </a>
+  <span style="display:inline-block; width:8px;"></span>
   <a href="https://www.deepsig.ai/">
     <img src="https://img.shields.io/badge/RobustAMCFR-Dataset-2c7bb6.svg" alt="Dataset">
   </a>
@@ -246,7 +247,16 @@ To add and train a new model within this framework, follow these steps:
    
 # 📝 Citation
 Please consider citing our paper if our code and benchmark are useful:
-
+```
+@inproceedings{
+liang2025robust,
+title={Robust Automatic Modulation Classification with Fuzzy Regularization},
+author={Xinyan Liang and Ruijie Sang and Yuhua Qian and Qian Guo and Feijiang Li and Liang Du},
+booktitle={Forty-second International Conference on Machine Learning},
+year={2025},
+url={https://openreview.net/forum?id=DDIGCk25BO}
+}
+```
 # 🙏 Acknowledgement
 Our AMCFR is developed based on the codebases of [TransGroupNet](https://github.com/DTMB-DL/TransGroupNet), and we gratefully acknowledge the developer's contribution.
 # 📪 Contact
