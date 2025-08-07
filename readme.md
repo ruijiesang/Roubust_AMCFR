@@ -1,6 +1,6 @@
 <h1 align="center">
   <a href="https://openreview.net/pdf?id=DDIGCk25BO" target="_blank">
-    VistaDPO: Video Hierarchical Spatial-Temporal Direct Preference Optimization for Large Video Models
+    Robust Automatic Modulation Classification with Fuzzy Regularizationq
   </a>
 </h1>
 
@@ -25,32 +25,22 @@
 
 
 
-# Citation
-```
-@ARTICLE{10458301,
-  author={Zeng, Rui and Lu, Zhilin and Zhang, Xudong and Wang, Jintao and Wang, Jian},
-  journal={IEEE Signal Processing Letters}, 
-  title={Convolutional Neural Network Assisted Transformer for Automatic Modulation Recognition Under Large CFOs and SROs}, 
-  year={2024},
-  volume={31},
-  number={},
-  pages={741-745},
-  keywords={Transformers;Convolution;Modulation;Feature extraction;Task analysis;Receivers;Frequency modulation;Automatic modulation recognition;carrier frequency offsets;sample rate offsets;transformer;group convolution},
-  doi={10.1109/LSP.2024.3372770}}
+# Abstract
+Automatic modulation classification (AMC) serves as a foundational pillar for cognitive radio systems, enabling critical functionalities including dynamic spectrum allocation, non-cooperative signal surveillance, and adaptive waveform optimization. However, practical deployment of
+AMC faces a fundamental challenge: prediction ambiguity arising from intrinsic similarity among
+modulation schemes and exacerbated under low signal-to-noise ratio (SNR) conditions. This phenomenon manifests as near-identical probability
+distributions across confusable modulation types, significantly degrading classification reliability.
+To address this, we propose Fuzzy Regularizationenhanced AMC (FR-AMC), a novel framework
+that integrates uncertainty quantification into the
+classification pipeline. The proposed FR has three
+features: (1) Explicitly model prediction ambiguity during backpropagation, (2) dynamic sample
+reweighting through adaptive loss scaling, (3) encourage margin maximization between confusable modulation clusters. Experimental results
+on benchmark datasets demonstrate that the FR
+achieves superior classification accuracy and robustness compared to compared methods, making
+it a promising solution for real-world spectrum
+management and communication applications.
 
-```
-
-
-# Requirements
-```
-pytorch
-yacs
-h5py
-matplotlib
-thop  
-```
-
-# Architecture
+# 🧱 Architecture
 ``` 
 home
 ├── amr/
@@ -63,23 +53,52 @@ home
 │   │   ├── config.py
 │   │   ├── draw.py
 │   │   ├── init.py
+│   │   ├── log_train_info.py
 │   │   ├── logger.py
 │   │   ├── solver.py
 │   │   ├── static.py
-├── configs/  (hyperparameters)
-│   ├── *.yaml
-├── main.py
-├── datasets/
-├── results/
+├── Data/
+├── train_DAELSTM/
+│   ├── DAELSTM_configs/
+│   ├── results/
+│   ├── DAELSTM_configs.py
+│   ├── train.py
+│   ├── train_Cen.py
+├── train_FEAT/
+├── train_MCLDNN/
+├── train_ThreeStream/
 ```
+# 🛠️ Previous Preparation
+## 1.Clone this repository and navigate to source folder
+``` 
+cd VistaDPO
+``` 
 
-# Quick Start
-If you want to train a network from scratch, please follow these steps:
-1. preparing dataset: download the dataset with large-scale offsets [dataset.rar](https://drive.google.com/file/d/1xZa9GcZoIZXstkwNd4E68Wbq7DdFN-a5/view?usp=sharing), and form the file path like 'dataset/cfo.hdf5'
+## 2.Build Environment
+``` bash
+echo "Creating conda environment"
+conda create -n AMCFR python=3.10
+conda activate AMCFR
 
-2. training and testing: run `python main.py --config xxx`. e.g.`python main.py --config configs/transgroupnet_cfo.yaml`
+echo "Installing dependencies"
+pip install -r requirements.txt
+``` 
+## 3.Download the dataset
+All of our datasets are public datasets, and you can obtain the [datasets](https://www.deepsig.ai/) you need at this location. 
+Download the dataset to the "Data/" folder.
 
-3. checking the results: check the well-trained models and the figures in `results/`
+
+# 🚀 Quick Start
+## 1.Modify the dataset address
+
+## 2.Model configuration
+
+## 3.Train
+
+## 4.Checking the results
+
+
+# 🙏 Acknowledgement
 
 # Result Reproduction
 1. preparing dataset: download the dataset with large-scale offsets [dataset.rar](https://drive.google.com/file/d/1xZa9GcZoIZXstkwNd4E68Wbq7DdFN-a5/view?usp=sharing), and form the file path like 'dataset/cfo.hdf5'
