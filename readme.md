@@ -40,6 +40,8 @@ achieves superior classification accuracy and robustness compared to compared me
 it a promising solution for real-world spectrum
 management and communication applications.
 
+![Demo Image](assert/image.pdf)
+
 # 🧱 Architecture
 ``` 
 home
@@ -104,9 +106,19 @@ class SignalDataLoader(object):
         data_keys=data.keys()
 ```
 ## 2.Model configuration
-选择一个你想训练的模型，例如"DAELSTM"模型，进入模型对应的子文件夹"train_DAELSEM/DAELSTM_configs"进行参数配置。DAELSTM_train.yaml文件对应train.py文件；DAELSTM_train_Cen.yaml文件对应train_Cen.py文件。（此处我们保留两个训练脚本是因为FR损失涉及参数，而其余部分损失不涉及参数选择。）
-### (1) 修改DAELSTM_config.py文件
-将配置文件"DAELSTM_train.yaml"地址更换为该文件在您设备的实际地址。
+Choose the model you wish to train — for example, the `DAELSTM` model.  
+Navigate to the corresponding configuration directory: `train_DAELSEM/DAELSTM_configs/.`
+
+This folder contains two YAML configuration files used for different training scripts:
+
+- `DAELSTM_train.yaml` → used with `train.py`  
+- `DAELSTM_train_Cen.yaml` → used with `train_Cen.py`
+
+> **Note:** We provide two separate training scripts because the FR loss involves additional hyperparameters, while the other loss components do not require parameter tuning.
+
+### (1) Modify the `DAELSTM_config.py` File
+In the `DAELSTM_config.py` file, replace the path to the `DAELSTM_train.yaml` configuration file with its actual location on your local device.
+
 ```
 def get_cfgs():
     cfgs = get_cfg_defaults()
@@ -117,9 +129,17 @@ def get_cfgs():
     cfgs.merge_from_file(args.config)
     return cfgs
 ```
-### (2) 修改"DAELSTM_train.yaml"文件
-在该文件中methon对应所用模型架构（"./amr/models/networks/DAELSTM"）,network表示具体网络。（"DAELSTM.py" or 
-"DAELSTM_1024.py");train表示进行训练或是只进行测试；scal控制是否添加噪声；
+### (2)  Modify the `DAELSTM_train.yaml` File
+Within this file, the following keys define key components of the training process:
+
+- `methon`: Specifies the path to the model architecture. For example:`"./amr/models/networks/DAELSTM"`.
+
+- `network`: Indicates the specific network implementation to use, such as:`"DAELSTM.py"` or `"DAELSTM_1024.py"`.
+
+- `train`: Determines whether to run the script in training mode or testing-only mode.
+
+- `scal`: Controls whether noise is added to the input data.  
+
 ```yaml
 method: 'DAELSTM'
 train: True
@@ -145,8 +165,10 @@ params:
     "early_stop": False
     "Xmode": [{"type":"AP","options":{"IQ_norm":False, "zero_mask":True}}]
 ```
-### (3)修改寻参范围
-假如您是一个k分类问题，c的取值就是[1,k],t表示FR损失和交叉熵损失之间的权重。更多参数细节可见论文4.6节。
+### (3) Notes on `train.py` File
+If you are working on a *k*-class classification task, the value of `c` should be set to the range `[1, k]`. The parameter `t` denotes the weight between the FR loss and the cross-entropy loss. 
+For more details about parameter definitions and training settings, please refer to Section 4.6 of the [paper](https://openreview.net/pdf?id=DDIGCk25BO).
+
 ```
 if __name__ == '__main__':
     c = [5]
@@ -159,18 +181,24 @@ if __name__ == '__main__':
 ```
 
 ## 3.Train
-### 运行带有参数的损失
+### Running Loss Functions with hyper-parameter
 ```bash
 cd './AMCFR/train_DAELSTM'
 python train.py
 ```
-### 运行无参数损失
+### Running Loss Functions Without hyper-parameter
 ```bash
 cd './AMCFR/train_DAELSTM'
 python train_Cen.py
 ```
 ## 4.Checking the results
-在代码运行完毕后，程序会自动生成一个"results/"文件夹，保存最优模型参数、训练信息以及混淆矩阵。
+Upon completion of the training process, the program will automatically create a `results/` directory.
+
+This folder stores:
+
+- The best model parameters based on validation performance  
+- Training information and logs  
+- The confusion matrix for classification evaluation
 ```
 ├── train_DAELSTM/
 │   ├── DAELSTM_configs/
@@ -186,32 +214,39 @@ python train_Cen.py
 ```
 # 🔄 Select other models or datasets
 ## Change the dataset
-如果你要使用一个新的数据集
+To use a new dataset with this framework, follow the steps below:
 
-(1) 将数据集下载到指定文件夹中。
+1. **Download the dataset**  
+   Place the dataset into your designated local directory.
 
-(2) 在'./Roubust_AMCFR/amr/dataloaders'中创建一个新的数据处理文件"dataloader_Newdataset",并将输出端口与已有输出端口保持一致，例如"dataloader_2016aData.py"文件。
+2. **Create a new data loader**  
+   In the `./Roubust_AMCFR/amr/dataloaders/` folder, create a new data loader script named: `dataloader_Newdataset.py`. 
+Ensure that the output format and return values are consistent with existing loaders (e.g., `dataloader_2016aData.py`).
 
-(3) 对需要运行模型的config文件进行修改，例如"./Roubust_AMCFR/train_DAELSTM/DAELSTM_configs/DAELSTM_train.yaml"文件中，将"dataset:"设置为'Newdataset'.
-
+3. **Update the configuration file**  
+   Modify the relevant config file to use your new dataset. For example, in: `./Roubust_AMCFR/train_DAELSTM/DAELSTM_configs/DAELSTM_train.yaml`
+set the `dataset` field to:`dataset: Newdataset`.
 ## Change the model
-如果你要使用一个新的模型
+To add and train a new model within this framework, follow these steps:
 
-(1) 将模型保存在"./Roubust_AMCFR/amr/models/networks"文件夹中。
+1. **Save the model implementation**  
+   Place your model definition file in the following directory: `./Roubust_AMCFR/amr/models/networks/`
 
-(2) 创建"train_Newmodel"子文件夹，类似"train_DAELSTM"文件夹。
+2. **Create a new training folder**  
+   Create a subdirectory named `train_Newmodel`, following the structure of the existing `train_DAELSTM` folder.  
+   This folder should contain configuration and training scripts specific to the new model.
 
-(3) 修改"model_config.py"文件，以及"model_train.yaml"文件.(例如"DAELSTM_config.py"文件和"DAELSTM_train.yaml"文件)
-
+3. **Configure the model and training parameters**  
+   Create new configuration and training script files (`Newmodel_config.py`, `Newmodel_train.yaml` and `train.py`) based on the existing ones (e.g., `DAELSTM_config.py`, `DAELSTM_train.yaml` and `train.py`).
+   
 # 📝 Citation
 Please consider citing our paper if our code and benchmark are useful:
 
 # 🙏 Acknowledgement
-
+Our AMCFR is developed based on the codebases of [TransGroupNet](https://github.com/DTMB-DL/TransGroupNet), and we gratefully acknowledge the developer's contribution.
 # 📪 Contact
-For any question, feel free to email <span style="background-color:#f2f2f2; border-radius:6px; padding:2px 6px; font-family:monospace;">
-  sangrj66@163.com
-</span>
+For any question, feel free to email `sangrj66@163.com`.
+
 
 
 
