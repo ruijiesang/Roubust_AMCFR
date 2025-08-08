@@ -1,12 +1,11 @@
 from amr.utils import logger
 import torch
 import time
-from sklearn.metrics import recall_score, f1_score
-from amr.utils.logger import save_output_to_hdf5, save_data_noshink
+from sklearn.metrics import  f1_score
+from amr.utils.logger import  save_data_noshink
 from amr.utils.static import *
-from amr.dataloaders.preprocess import *
 import os
-import numpy as np
+
 __all__ = ["Trainer", "Tester"]
 
 
@@ -17,7 +16,7 @@ class Trainer:
         self.optimizer = optimizer
         self.lr_decay = lr_decay
         self.scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(self.optimizer, mode='min', factor=lr_decay,
-                                                                    patience=5, verbose=True, threshold=0.0001,
+                                                                    patience=5, threshold=0.0001,
                                                                     threshold_mode='rel', cooldown=0, min_lr=1e-6,
                                                                     eps=1e-08)
         self.criterion = criterion
@@ -31,7 +30,7 @@ class Trainer:
         self.train_acc_all = []
         self.valid_loss_all = []
         self.valid_acc_all = []
-        self.train_times = []  # 用于记录每轮训练的用时
+        self.train_times = []  # record the time of every epoch
         self.valid_freq = valid_freq
         self.save_path = save_path
         self.best_acc = None
@@ -52,17 +51,17 @@ class Trainer:
             if ep>180:
                 shrink_save=True
             '''
-            start_time = time.time()  # 记录每轮训练的开始时间
+            start_time = time.time()  # record the time of begin
             self.train_loss, self.train_acc ,Y_soft_list,Y_list= self.train(train_loader,shrink_save)
-            end_time = time.time()  # 记录每轮训练的结束时间
-            elapsed_time = end_time - start_time  # 计算每轮训练的耗时
-            self.train_times.append(elapsed_time)  # 将耗时添加到列表中
+            end_time = time.time()  #  record the time of end
+            elapsed_time = end_time - start_time  # Calculate the time consumption for each round of training
+            self.train_times.append(elapsed_time)  # Add the time consumption to the list
             #save_output_to_hdf5([ep],Y_soft_list,Y_list,self.save_path)
 
             self.train_loss_all.append(self.train_loss)
             self.train_acc_all.append(self.train_acc)
 
-            #保存验证信息
+            #Save verification information
             self.valid_loss, self.valid_acc,test_pre,test_label = self.val(valid_loader)
 
             self.valid_loss_all.append(self.valid_loss)
@@ -75,14 +74,7 @@ class Trainer:
             if self.early_stop and self.stop_flag:
                 logger.info(f'early stopping at Epoch: [{self.cur_epoch}]')
                 break
-        # 输出所有轮次的最小用时、最长用时和平均用时
-        min_time = min(self.train_times)
-        max_time = max(self.train_times)
-        avg_time = sum(self.train_times) / len(self.train_times)
 
-        logger.info(f"所有轮次的最小用时：{min_time:.2f} 秒")
-        logger.info(f"所有轮次的最长用时：{max_time:.2f} 秒")
-        logger.info(f"所有轮次的平均用时：{avg_time:.2f} 秒")
         return self.train_loss_all, self.train_acc_all, self.valid_loss_all, self.valid_acc_all
 
     def train(self, train_loader,shrink_save):
@@ -109,7 +101,7 @@ class Trainer:
             Y_soft = self.model(X)
             loss, Y_pred = self.criterion(Y_soft, Y,X)
 
-            #保存信息
+            #save message
             Y_args=torch.softmax(Y_soft,dim=1)
             #Y_soft_list.extend(Y_args)
             #Y_list.extend(Y)
@@ -191,7 +183,7 @@ class Tester:
         with torch.no_grad():
             loss, acc, f1 = self._iteration(test_loader)
 
-        # 输出结果，包括Recall和F1-score
+        # output result，Recall and F1-score
         if verbose:
             logger.info(f'Test | '
                         f'loss: {loss:.3e} | '
@@ -204,8 +196,8 @@ class Tester:
         iter_acc = AverageMeter('Iter acc')
         stime = time.time()
 
-        all_true_labels = []  # 保存所有真实标签
-        all_pred_labels = []  # 保存所有预测标签
+        all_true_labels = []  # save all true label
+        all_pred_labels = []  # save all pre label
 
         for batch_idx, (X, Y, Z) in enumerate(data_loader):
             X, Y, Z = X.to(self.device).float(), Y.to(self.device), Z.to(self.device)
@@ -214,7 +206,7 @@ class Tester:
             acc_pred = (Y_pred == Y).sum()
             acc_total = Y.numel()
 
-            # 将真实标签和预测标签保存到列表中
+            # add true label and pre label to list
             all_true_labels.extend(Y.cpu().numpy())
             all_pred_labels.extend(Y_pred.cpu().numpy())
 
@@ -228,7 +220,7 @@ class Tester:
             iter_acc.update(acc_pred / acc_total, acc_total)
             iter_loss.update(loss)
 
-        # 计算每类的混淆矩阵
+        # Calculate the confusion matrix for each category
         for i in range(self.classes):
             self.conf[i, :] /= torch.sum(self.conf[i, :])
         for j in range(len(self.snrs)):
@@ -236,7 +228,7 @@ class Tester:
             for i in range(self.classes):
                 self.conf_snr[j, i, :] /= torch.sum(self.conf_snr[j, i, :])
 
-        # 计算总体 Recall 和 F1-score
+        # Calculate the overall Recall and F1-score
         f1 = f1_score(all_true_labels, all_pred_labels, average='weighted')
         ftime = time.time()
         logger.info(f'Test | '

@@ -6,20 +6,36 @@ __all__ = ["SignalDataLoader"]
 
 
 class SignalDataLoader(object):
-    def __init__(self, mod_type=[],snr_type=[]):
+    def __init__(self, mod_type=[],snr_type=[],scal=0):
         mods = ['OOK', '4ASK', '8ASK', 'BPSK', 'QPSK', '8PSK', '16PSK', '32PSK', '16APSK', '32APSK', '64APSK', '128APSK', '16QAM', '32QAM', '64QAM', '128QAM', '256QAM', 'AM-SSB-WC', 'AM-SSB-SC', 'AM-DSB-WC', 'AM-DSB-SC','FM', 'GMSK', 'OQPSK']  # "CPFSK"
-        with h5py.File(r'/home/sangruijie_qyh/Data/Signal/Data2018_5 (1).hdf5', 'r+') as h5file:
+        with h5py.File(r'/home/sangruijie_qyh/Data/Signal/GOLD_XYZ_OSC.0001_1024.hdf5', 'r+') as h5file:
             allX = np.asarray(h5file['X'][:])
             allY = np.asarray(h5file['Y'][:])   #独热编码
             allZ = np.asarray(h5file['Z'][:])
 
+        allY=np.argmax(allY,axis=1)
+        allZ=allZ.reshape(-1)
+        X = []
+        Y = []
+        Z = []
 
-        X = np.asarray(allX)
-        X = np.transpose(X, (0, 2, 1))#对数据进行变换
-        Y = np.asarray(allY)
-        Z = np.asarray(allZ)
+        #made mod_type to number
+        mod_type_number=[]
+        for i in mod_type:
+            mod_type_number.append(mods.index(i))
 
-        self.snrs = np.unique(Z).tolist()
+        for idx in range(allX.shape[0]):
+            if allY[idx] in mod_type_number and allZ[idx] in snr_type:
+                X.append(allX[idx])
+                Y.append(mod_type_number.index(allY[idx]))
+                Z.append(allZ[idx])
+
+        X = np.asarray(X)
+        X = np.transpose(X, (0, 2, 1))
+        Y = np.asarray(Y)
+        Z = np.asarray(Z)
+
+        self.snrs = snr_type
         self.mods = mod_type
 
         n_examples = X.shape[0]
@@ -33,29 +49,20 @@ class SignalDataLoader(object):
         valid_idx = allnum[n_train:n_train + n_valid]
         test_idx = allnum[n_train + n_valid:]
 
-        # 定义比例因子，控制噪声强度与数据大小的关系
-        scaling_factor = 0.4  # 可调整比例因子
+        scaling_factor = scal
 
-        # 计算每个数据样本的标准差，以此为依据动态调整噪声强度
         noise_std_per_sample = np.std(X[valid_idx], axis=(1, 2), keepdims=True) * scaling_factor
 
-        # 生成与 IQ_data 形状相同的噪声，每个样本有不同的噪声强度
-        noise = np.random.normal(0, noise_std_per_sample, X[valid_idx].shape)
+        noise_v = np.random.normal(0, noise_std_per_sample, X[valid_idx].shape)
 
-        # 将噪声添加到 IQ 数据中
-        X[valid_idx] = X[valid_idx] + noise
-
-        # 定义比例因子，控制噪声强度与数据大小的关系
-        scaling_factor = 0.4  # 可调整比例因子
-
-        # 计算每个数据样本的标准差，以此为依据动态调整噪声强度
         noise_std_per_sample = np.std(X[test_idx], axis=(1, 2), keepdims=True) * scaling_factor
 
-        # 生成与 IQ_data 形状相同的噪声，每个样本有不同的噪声强度
-        noise = np.random.normal(0, noise_std_per_sample, X[test_idx].shape)
+        noise_t = np.random.normal(0, noise_std_per_sample, X[test_idx].shape)
+        if scal!=0:
+            # add noise
+            X[valid_idx] = X[valid_idx] + noise_v
 
-        # 将噪声添加到 IQ 数据中
-        X[test_idx] = X[test_idx] + noise
+            X[test_idx] = X[test_idx] + noise_t
 
         self.X_train = X[train_idx]
         self.Y_train = Y[train_idx]

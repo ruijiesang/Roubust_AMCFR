@@ -3,7 +3,7 @@ import matplotlib
 import os
 import torch
 from amr.utils import logger
-import pandas as pd
+
 matplotlib.use('Agg')
 
 __all__ = ["draw_train", "draw_conf", "draw_acc"]

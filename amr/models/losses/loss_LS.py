@@ -15,14 +15,11 @@ class loss_LS(nn.Module):
     def forward(self, pred,label,ori):
         predictions = F.softmax(pred, dim=1)
 
-        # 标签平滑
         n_classes = predictions.size(1)
         one_hot = torch.zeros_like(predictions).scatter_(1, label.unsqueeze(1), 1)
 
-        # 标签平滑：目标类别的概率变为 (1 - epsilon)，非目标类别的概率变为 epsilon / (C-1)
         smooth_target = one_hot * (1 - self.eps) + (1 - one_hot) * (self.eps / (n_classes - 1))
 
-        # 计算标签平滑后的交叉熵损失
         lprobs = F.log_softmax(pred, dim=1)
         loss_ce = -torch.sum(smooth_target * lprobs, dim=1)  # 平滑标签下的交叉熵损失
         loss_ce = loss_ce.mean()

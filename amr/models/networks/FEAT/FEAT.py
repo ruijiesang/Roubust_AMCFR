@@ -1,10 +1,6 @@
-import pickle
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
 import torch.utils.data
-from torch.autograd import Variable
 import thop
 from einops import rearrange, repeat
 
@@ -182,7 +178,7 @@ class FEAT(nn.Module):
         cls_tokens = repeat(self.cls_token, '1 n d -> b n d', b=B)  # (B, 1, D)
         x = torch.cat((cls_tokens, torch.matmul(x, self.We)), dim=1)
         x += self.pos_embedding[:, :(N + 1)]
-        x = self.dropout(x)  # 此处dropout有效缓解后期过拟合问题
+        x = self.dropout(x)
 
         # B, F+1, 3L  =  B, 64, 96
         codex = self.coder(x)[:, 0]

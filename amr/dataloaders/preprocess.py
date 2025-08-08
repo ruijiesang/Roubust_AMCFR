@@ -1,4 +1,3 @@
-import torch
 from .transform import *
 import numpy as np
 __all__ = ['DataPreprocess']
@@ -10,7 +9,7 @@ class DataPreprocess(object):
         self.Xmode = Xmode
         self.Xtype = self.Xmode["type"]
 
-    def datapreprocess(self, X):  # 根据Xmode定制批数据
+    def datapreprocess(self, X):  # transform data based on X_mod
         NX = X.copy()
         if ("IQ_norm" in self.Xmode["options"]) and self.Xmode["options"]["IQ_norm"]:
             X = normalize_IQ(X)

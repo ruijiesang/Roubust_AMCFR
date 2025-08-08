@@ -2,7 +2,7 @@ from yacs.config import CfgNode as CN
 import argparse
 import importlib
 
-__all__ = ['get_cfgs']#用于被别的代码调用
+__all__ = ['get_cfgs','get_cfgs_Cen']#用于被别的代码调用
 
 _C = CN()
 
@@ -39,7 +39,16 @@ def get_cfg_defaults():
 def get_cfgs():
     cfgs = get_cfg_defaults()
     parser = argparse.ArgumentParser(description='AMR HyperParameters')
-    parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-FR/Roubust_AMCFR/train_ThreeStream/ThreeStream_configs/ThreeStream_data2016a.yaml',
+    parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-FR/Roubust_AMCFR/train_ThreeStream/ThreeStream_configs/ThreeStream_train.yaml',
+                        help='type of config file. e.g. resnet_cfo (Resnet_configs/resnet_cfo.yaml)')
+    args = parser.parse_args()
+    cfgs.merge_from_file(args.config)
+    return cfgs
+
+def get_cfgs_Cen():
+    cfgs = get_cfg_defaults()
+    parser = argparse.ArgumentParser(description='AMR HyperParameters')
+    parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-FR/Roubust_AMCFR/train_ThreeStream/ThreeStream_configs/ThreeStream_train_Cen.yaml',
                         help='type of config file. e.g. resnet_cfo (Resnet_configs/resnet_cfo.yaml)')
     args = parser.parse_args()
     cfgs.merge_from_file(args.config)

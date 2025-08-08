@@ -1,5 +1,4 @@
 import torch.nn as nn
-from torch.autograd import Variable
 import torch
 import thop
 import math
@@ -58,14 +57,14 @@ class DAELSTM(nn.Module):
         self.lstmae = LSTMAE(input_size=input_size, hidden_size=hidden_size, dropout_ratio=dropout_ratio)
         self.clf_dense_1 = nn.Sequential(
             nn.Linear(in_features=32, out_features=32),
-            nn.ReLU(inplace=True),  # 激活函数
-            nn.BatchNorm1d(32),  # 批量归一化,
+            nn.ReLU(inplace=True),
+            nn.BatchNorm1d(32),
             nn.Dropout(dropout_ratio)
         )
         self.clf_dense_2 = nn.Sequential(
             nn.Linear(in_features=32, out_features=16),
-            nn.ReLU(inplace=True),  # 激活函数
-            nn.BatchNorm1d(16),  # 批量归一化,
+            nn.ReLU(inplace=True),
+            nn.BatchNorm1d(16),
             nn.Dropout(dropout_ratio)
         )
         self.clf_dense_3 = nn.Sequential(

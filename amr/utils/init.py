@@ -7,7 +7,7 @@ from amr.models import *
 import importlib
 
 
-__all__ = ["init_device", "init_model", "init_loss","init_loss_FG"]
+__all__ = ["init_device", "init_model", "init_loss","init_loss_FR"]
 
 
 def init_device(seed=None, cpu=None, gpu=None):
@@ -56,7 +56,7 @@ def init_loss(loss_func):
 
 
 
-def init_loss_FG(loss_func,c,t,alp):
+def init_loss_FR(loss_func,c,t,alp):
     loss = getattr(importlib.import_module("amr.models.losses." + loss_func), loss_func)(c,t,alp)
     return loss
 

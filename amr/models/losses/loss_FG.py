@@ -2,11 +2,11 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-__all__ = ["loss_FG"]
+__all__ = ["loss_FR"]
 
-class loss_FG(nn.Module):
+class loss_FR(nn.Module):
     def __init__(self,c,t,alpha=0.01):
-        super(loss_FG, self).__init__()
+        super(loss_FR, self).__init__()
         self.c = c
         self.t = t
         self.alpha=alpha

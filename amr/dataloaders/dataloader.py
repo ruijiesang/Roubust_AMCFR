@@ -8,9 +8,9 @@ __all__ = ['AMRDataLoader']
 
 
 class AMRDataLoader(object):
-    def __init__(self, dataset, Xmode, batch_size, num_workers, pin_memory, mod_type=[],snr_type=[],ismulti=False):
+    def __init__(self, dataset, Xmode, batch_size, num_workers, pin_memory, mod_type=[],snr_type=[],scal=0,ismulti=False):
         X_train, Y_train, Z_train, X_valid, Y_valid, Z_valid, X_test, Y_test, Z_test, self.snrs, self.mods = getattr(
-            importlib.import_module("amr.dataloaders.dataloader_" + dataset), "SignalDataLoader")(mod_type,snr_type)()
+            importlib.import_module("amr.dataloaders.dataloader_" + dataset), "SignalDataLoader")(mod_type,snr_type,scal)()
 
         if not ismulti:
             datapreprocess = DataPreprocess(Xmode)

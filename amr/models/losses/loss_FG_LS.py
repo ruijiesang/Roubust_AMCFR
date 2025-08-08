@@ -2,11 +2,11 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-__all__ = ["loss_FG_LS"]
+__all__ = ["loss_FR_LS"]
 
-class loss_FG_LS(nn.Module):
+class loss_FR_LS(nn.Module):
     def __init__(self,c,t,alpha=0.01):
-        super(loss_FG_LS, self).__init__()
+        super(loss_FR_LS, self).__init__()
         self.c = c
         self.t = t
         self.alpha=alpha
@@ -16,16 +16,16 @@ class loss_FG_LS(nn.Module):
         predictions = F.softmax(pred, dim=1)
         batch_size = predictions.size(0)
 
-        # 标签平滑
+        # smooth_label
         n_classes = predictions.size(1)
         one_hot = torch.zeros_like(predictions).scatter_(1, label.unsqueeze(1), 1)
 
-        # 标签平滑：目标类别的概率变为 (1 - epsilon)，非目标类别的概率变为 epsilon / (C-1)
+        # smooth_label：the probability of the target category has changed to (1 - epsilon)
         smooth_target = one_hot * (1 - self.eps) + (1 - one_hot) * (self.eps / (n_classes - 1))
 
-        # 计算标签平滑后的交叉熵损失
+        # Calculate the cross-entropy loss after smoothing the labels
         lprobs = F.log_softmax(pred, dim=1)
-        loss_ce = -torch.sum(smooth_target * lprobs, dim=1)  # 平滑标签下的交叉熵损失
+        loss_ce = -torch.sum(smooth_target * lprobs, dim=1)
         loss_ce = loss_ce.mean()
 
         epsilon = 0.01
