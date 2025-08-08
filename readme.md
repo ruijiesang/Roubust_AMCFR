@@ -50,7 +50,7 @@ management and communication applications.
 
 # 🧱 Architecture
 ``` 
-home
+home/
 ├── amr/
 │   ├── dataloaders/
 │   ├── models/
@@ -94,27 +94,26 @@ pip install -r requirements.txt
 ``` 
 ## 3.Download the dataset
 All of our datasets are public datasets, and you can obtain the [datasets](https://www.deepsig.ai/) you need at this location. 
-Download the dataset to the `Data/` folder.
-
+Download the dataset to the `./home/Data/` folder.
 
 # 🚀 Quick Start
 ## 1.Modify the dataset address
 
-Navigate to the 'amr/dataloaders/' directory and select the corresponding dataset loader file (e.g., 'dataloader_2016aData.py').
-Locate the 'data_path' variable and update its value to the path where your dataset is stored on your local machine.
+Navigate to the`./home/amr/dataloaders/` directory and select the corresponding dataset loader file (e.g., `dataloader_2016aData.py`).
+Locate the `data_path` variable and update its value to the path where your dataset is stored on your local machine.
 ```
 class SignalDataLoader(object):
     def __init__(self, mod_type=[],snr_type=[],scal=0):
         mods = ['8PSK', 'AM-DSB', 'AM-SSB', 'BPSK', 'CPFSK', 'GFSK', 'PAM4', 'QAM16','QAM64', 'QPSK', 'WBFM']
         
-        data_path=r'/home/sangruijie_qyh/Data/Signal/RML2016.10a_dict.pkl'
+        data_path=r'/home/Data/RML2016.10a_dict.pkl'
        
         data = pickle.load(open(data_path, 'rb'), encoding='iso-8859-1')
         data_keys=data.keys()
 ```
 ## 2.Model configuration
 Choose the model you wish to train — for example, the `DAELSTM` model.  
-Navigate to the corresponding configuration directory: `train_DAELSEM/DAELSTM_configs/.`
+Navigate to the corresponding configuration directory: `./home/train_DAELSEM/DAELSTM_configs/.`
 
 This folder contains two YAML configuration files used for different training scripts:
 
@@ -130,16 +129,17 @@ In the `DAELSTM_config.py` file, replace the path to the `DAELSTM_train.yaml` co
 def get_cfgs():
     cfgs = get_cfg_defaults()
     parser = argparse.ArgumentParser(description='AMR HyperParameters')
-    parser.add_argument('--config', type=str, default='/home/sangruijie_qyh/Code/TransGroupNet-FR/Roubust_AMCFR/train_DAELSTM/DAELSTM_configs/DAELSTM_train.yaml',
+    parser.add_argument('--config', type=str, default='/home/train_DAELSTM/DAELSTM_configs/DAELSTM_train.yaml',
                         help='type of config file. e.g. resnet_cfo (Resnet_configs/resnet_cfo.yaml)')
     args = parser.parse_args()
     cfgs.merge_from_file(args.config)
     return cfgs
 ```
+
 ### (2)  Modify the `DAELSTM_train.yaml` File
 Within this file, the following keys define key components of the training process:
 
-- `methon`: Specifies the path to the model architecture. For example:`"./amr/models/networks/DAELSTM"`.
+- `methon`: Specifies the path to the model architecture. For example:`"./home/amr/models/networks/DAELSTM"`.
 
 - `network`: Indicates the specific network implementation to use, such as:`"DAELSTM.py"` or `"DAELSTM_1024.py"`.
 
@@ -190,12 +190,12 @@ if __name__ == '__main__':
 ## 3.Train
 ### Running Loss Functions with hyperparameter
 ```bash
-cd './AMCFR/train_DAELSTM'
+cd './home/train_DAELSTM'
 python train.py
 ```
 ### Running Loss Functions Without hyperparameter
 ```bash
-cd './AMCFR/train_DAELSTM'
+cd './home/train_DAELSTM'
 python train_Cen.py
 ```
 ## 4.Checking the results
@@ -224,7 +224,7 @@ This folder stores:
 To use a new dataset with this framework, follow the steps below:
 
 1. **Download the dataset**  
-   Download the dataset to the specified directory `/home/Data/`.
+   Download the dataset to the specified directory `./home/Data/`.
 
 2. **Create a new data loader**  
    In the `./home/amr/dataloaders/` folder, create a new data loader script named: `dataloader_Newdataset.py`. Ensure that the output format and return values are consistent with existing loaders (e.g., `dataloader_2016aData.py`).
@@ -236,7 +236,7 @@ To use a new dataset with this framework, follow the steps below:
 To add and train a new model within this framework, follow these steps:
 
 1. **Save the model implementation**  
-   Place your model definition file in the following directory: `./Roubust_AMCFR/amr/models/networks/`
+   Place your model definition file in the following directory: `./home/amr/models/networks/`
 
 2. **Create a new training folder**  
    Create a subdirectory named `train_Newmodel`, following the structure of the existing `train_DAELSTM` folder.  
