@@ -5,12 +5,12 @@
 </h1>
 
 <p align="center">
-  <a href="https://xinyanliang.github.io/"><u>Xinyan Liang</u></a><sup>1</sup>, 
-  <u>Ruijie Sang</u><sup>1</sup>, 
-  <a href="https://dig.sxu.edu.cn/qyh/"><u>Yuhua Qian</u></a><sup>1</sup>, 
-  <u>Qian Guo</u><sup>2</sup>, 
-  <u>Feijiang Li</u><sup>1</sup>,
-  <u>Liang Du</u><sup>1</sup>
+  <a href="https://xinyanliang.github.io/">Xinyan Liang</a><sup>1</sup>, 
+  Ruijie Sang<sup>1</sup>, 
+  <a href="https://dig.sxu.edu.cn/qyh/">Yuhua Qian</a><sup>1</sup>, 
+  Qian Guo<sup>2</sup>, 
+  Feijiang Li<sup>1</sup>,
+  Liang Du<sup>1</sup>
 </p>
 
 <p align="center">
@@ -76,6 +76,7 @@ home
 ├── train_MCLDNN/
 ├── train_ThreeStream/
 ```
+
 # 🛠️ Previous Preparation
 ## 1.Clone this repository and navigate to source folder
 ``` bash
@@ -93,7 +94,7 @@ pip install -r requirements.txt
 ``` 
 ## 3.Download the dataset
 All of our datasets are public datasets, and you can obtain the [datasets](https://www.deepsig.ai/) you need at this location. 
-Download the dataset to the "Data/" folder.
+Download the dataset to the `Data/` folder.
 
 
 # 🚀 Quick Start
@@ -144,7 +145,7 @@ Within this file, the following keys define key components of the training proce
 
 - `train`: Determines whether to run the script in training mode or testing-only mode.
 
-- `scal`: Controls whether noise is added to the input data.  
+- `scal`: Control the noise intensity of the data.  
 
 ```yaml
 method: 'DAELSTM'
@@ -187,12 +188,12 @@ if __name__ == '__main__':
 ```
 
 ## 3.Train
-### Running Loss Functions with hyper-parameter
+### Running Loss Functions with hyperparameter
 ```bash
 cd './AMCFR/train_DAELSTM'
 python train.py
 ```
-### Running Loss Functions Without hyper-parameter
+### Running Loss Functions Without hyperparameter
 ```bash
 cd './AMCFR/train_DAELSTM'
 python train_Cen.py
@@ -202,9 +203,9 @@ Upon completion of the training process, the program will automatically create a
 
 This folder stores:
 
-- The best model parameters based on validation performance  
-- Training information and logs  
-- The confusion matrix for classification evaluation
+- The best model parameters based on validation performance(`./checkpoints/`)  
+- Training information and logs(`train_info.csv` and `test_info.csv`)  
+- The confusion matrix for classification evaluation(`./draws/`)
 ```
 ├── train_DAELSTM/
 │   ├── DAELSTM_configs/
@@ -223,15 +224,14 @@ This folder stores:
 To use a new dataset with this framework, follow the steps below:
 
 1. **Download the dataset**  
-   Place the dataset into your designated local directory.
+   Download the dataset to the specified directory `/home/Data/`.
 
 2. **Create a new data loader**  
-   In the `./Roubust_AMCFR/amr/dataloaders/` folder, create a new data loader script named: `dataloader_Newdataset.py`. 
-Ensure that the output format and return values are consistent with existing loaders (e.g., `dataloader_2016aData.py`).
+   In the `./home/amr/dataloaders/` folder, create a new data loader script named: `dataloader_Newdataset.py`. Ensure that the output format and return values are consistent with existing loaders (e.g., `dataloader_2016aData.py`).
 
 3. **Update the configuration file**  
-   Modify the relevant config file to use your new dataset. For example, in: `./Roubust_AMCFR/train_DAELSTM/DAELSTM_configs/DAELSTM_train.yaml`
-set the `dataset` field to:`dataset: Newdataset`.
+   Modify the relevant config file to use your new dataset. For example, in: `./home/train_DAELSTM/DAELSTM_configs/DAELSTM_train.yaml` set the `dataset` field to:`dataset: Newdataset`.
+
 ## Change the model
 To add and train a new model within this framework, follow these steps:
 
