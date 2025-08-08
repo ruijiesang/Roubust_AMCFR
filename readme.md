@@ -199,7 +199,7 @@ cd './home/train_DAELSTM'
 python train_Cen.py
 ```
 ## 4.Checking the results
-Upon completion of the training process, the program will automatically create a `results/` directory.
+Upon completion of the training process, the program will automatically create a `./results/` directory.
 
 This folder stores:
 
