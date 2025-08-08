@@ -3,7 +3,7 @@ from amr.dataloaders.dataloader import *
 from amr.utils import *
 from amr.utils.solver import *
 
-from FEAT_config import *
+from Resnet_config import *
 
 from amr.utils.log_train_info import train_info
 

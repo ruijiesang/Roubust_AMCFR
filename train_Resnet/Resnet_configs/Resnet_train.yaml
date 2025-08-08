@@ -1,0 +1,44 @@
+method: 'DAELSTM'
+train: True
+dataset: '2018Data'
+mod_type: ['OOK', '4ASK', '8ASK', 'BPSK', 'QPSK', '8PSK', '16PSK', '32PSK', '16APSK', '32APSK', '64APSK']
+snr_type: [0,2,4,6,8,10,12,14,16,18]
+scal : 0
+workers: 8
+seed: 1
+gpu: 7
+cpu: False
+params:
+    "network": "DAELSTM_1024"
+    "loss": "loss_FR"
+    "loss_c": 2
+    "loss_t": 2
+    "loss_alp": 0.01
+    "batch_size": 128
+    "epochs": 200
+    "lr": 5e-3
+    "lr_decay": 0.
+    "weight_decay": 0.
+    "early_stop": False
+    "Xmode": [{"type":"AP","options":{"IQ_norm":False, "zero_mask":True}}]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

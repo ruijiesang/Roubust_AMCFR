@@ -3,47 +3,47 @@ from amr.dataloaders.dataloader import *
 from amr.utils import *
 from amr.utils.solver import *
 
-from FEAT_config import *
+from Resnet_config import *
 
 from amr.utils.log_train_info import train_info
 
-def main(cfgs,c,t):
+def main(cfgs,t):
     logger.info('=> PyTorch Version: {}'.format(torch.__version__))
     # Environment initialization
     device, pin_memory = init_device(cfgs.seed, cfgs.cpu, cfgs.gpu)
     print(device, pin_memory)
 
-    path = './results/' + cfgs.method + '/' + cfgs.dataset + '/'  + cfgs.params["loss"]+'/' + str(c) +'c'+'_'+str(t)+'t'
+    path = './results/' + cfgs.method + '/' + cfgs.dataset + '/'  + cfgs.params["loss"]+'/' + str(t)+'t'
+
     train_loader, valid_loader, test_loader, snrs, mods = AMRDataLoader(dataset=cfgs.dataset,
                                                                         Xmode=cfgs.params["Xmode"][0],
                                                                         batch_size=cfgs.params["batch_size"],
                                                                         num_workers=cfgs.workers,
                                                                         pin_memory=pin_memory,
                                                                         mod_type=cfgs.mod_type,
-                                                                        snr_type=cfgs.snr_type,
-                                                                        scal=cfgs.scal)()
+                                                                        snr_type=cfgs.snr_type )()
+
     # load model
     model = init_model(cfgs,cfgs.params["network"],path)
     model.to(device)
 
-    criterion = init_loss_FR(cfgs.params["loss"],len(cfgs.mod_type),int(c),float(t))
+    criterion = init_loss(cfgs.params["loss"])
 
     # train model
     if cfgs.train:
         optimizer = torch.optim.AdamW(model.parameters(), lr=float(cfgs.params["lr"]), weight_decay=cfgs.params["weight_decay"])
         trainer = Trainer(model=model, device=device, optimizer=optimizer, lr_decay=cfgs.params["lr_decay"], criterion=criterion,
-                          save_path=path ,
+                          save_path=path,
                           early_stop=cfgs.params["early_stop"])
         train_loss, train_acc, valid_loss, valid_acc = trainer.loop(cfgs.params["epochs"], train_loader, valid_loader)
 
         draw_train(train_loss, train_acc, valid_loss, valid_acc,
                    save_path=path + '/draws')
 
-    # test model
     cfgs.train = False
     model = init_model(cfgs, cfgs.params["network"],path)
     model.to(device)
-    # 单个模型测试
+
     test_loss, test_acc, f1,test_conf, test_conf_snr, test_acc_snr = Tester(model=model, device=device,
                                                                          criterion=criterion,
                                                                          classes=len(cfgs.mod_type),
@@ -62,12 +62,16 @@ def main(cfgs,c,t):
 
     draw_acc(snrs, test_acc_snr,
              save_path=path + '/draws')
-    train_info(train_loss,train_acc,valid_loss,valid_acc,path)
+
+    train_info(train_loss, train_acc, valid_loss, valid_acc, path)
+
     highest_acc_snr = test_acc_snr.max().item()
     highest_acc_snr_idx = test_acc_snr.argmax().item()
+
     global best_acc
-    if test_acc>best_acc:
-        best_acc=test_acc
+    if test_acc > best_acc:
+        best_acc = test_acc
+
     path_test = './results/' + cfgs.method + '/' + cfgs.dataset + '/' + cfgs.params["loss"]
     logger.info(f'test_loss : {test_loss:.4e} | '
                 f'test_acc : {test_acc:.4f} |'
@@ -75,14 +79,13 @@ def main(cfgs,c,t):
                 f'Highest Acc SNR: {highest_acc_snr_idx} | '
                 f'Acc: {highest_acc_snr:.4f}'
                 f'best_acc :{best_acc:.4f}'
-                f'args_c :{c}'
-                f'args_t :{t}',file=path_test)
+                f'args_t :{t}', file=path_test)
 
 if __name__ == '__main__':
-    c = [5]
-    t = [ 0.0001 ]
+
+    t = [0]
     best_acc=0
-    for c1 in c:
-        for t1 in t:
-            cfgs = get_cfgs()
-            main(cfgs,c1,t1)
+    for t1 in t:
+        cfgs = get_cfgs_Cen()
+        cfgs.seed=t1+cfgs.seed
+        main(cfgs,t1)

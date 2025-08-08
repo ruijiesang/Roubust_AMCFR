@@ -9,7 +9,7 @@ gpu: 4
 cpu: False
 params:
     "network": "ThreeStream"
-    "loss": "loss_FG"
+    "loss": "loss_FR"
     "loss_c": 2
     "loss_t": 2
     "loss_alp": 0.01
